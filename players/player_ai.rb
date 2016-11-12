@@ -9,6 +9,7 @@ class PlayerAI
 
   def take_turn
     world_animal = spot_world_animal(world)
+    try_group_habitat_animal(world_animal) if world_animal
     try_capture_animal(world_animal) if world_animal
     nurture_resource
   end
@@ -43,9 +44,18 @@ class PlayerAI
     world.animals.to_a[rand(world.animals.length)].first
   end
 
-  def try_capture_animal(world_animal)
-    if available_resources.enough_resource_for?(world_animal)
-      WorldManager.transfer_animal(from: world, to: self, animal: world_animal)
+  def try_capture_animal(animal)
+    if available_resources.enough_resource_for?(animal)
+      WorldManager.transfer_animal(from: world, to: self, animal: animal)
+    end
+  end
+
+  def try_group_habitat_animal(animal)
+    ecosystem = Ecosystem.new(player: self)
+    group_target, discount = ecosystem.group_habitat_check(animal)
+
+    if group_target
+      WorldManager.transfer_animal(from: world, to: self, animal: animal, discount: discount)
     end
   end
 end

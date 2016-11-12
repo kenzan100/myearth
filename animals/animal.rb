@@ -11,10 +11,19 @@ class AnimalManager
 end
 
 class Animal
-  attr_accessor :name, :power, :required_resource_cnt, :resource_color
-  def initialize(name: 'Sample Animal', power: 1, required_resource_cnt: 1, resource_color:)
+  attr_accessor :name, :power, :required_resource_cnt, :resource_color, :dietaries
+  def initialize(name: 'Sample Animal',
+                 power: 1,
+                 required_resource_cnt: 1,
+                 resource_color:,
+                 dietaries: [])
     @name, @power, @required_resource_cnt = name, power, required_resource_cnt
     @resource_color = resource_color
+    @dietaries = dietaries
+  end
+
+  def eat?(other)
+    dietaries.include?(other.name)
   end
 
   def ==(other)

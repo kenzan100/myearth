@@ -1,10 +1,10 @@
 class WorldManager
-  def self.transfer_animal(from:, to:, animal:)
+  def self.transfer_animal(from:, to:, animal:, discount: 0)
     # TODO: Make it transactional (take lock)
     puts "NEWS: #{to.name.capitalize} acquired #{animal.name} !!"
     from.subtract(animal)
     to.add(animal)
-    to.available_resources.subtract_for(animal)
+    to.available_resources.subtract_for(animal, discount: discount)
   end
 
   def self.take_turn(world:, players:)
